@@ -9,21 +9,26 @@
 """
 Add a polynomial and a term.
 """
-function +(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI}, t::Union{Term,TermBI})
-    p = deepcopy(p)
-    if t.degree > degree(p)
-        push!(p, t)
-    else
-        if !iszero(p.terms[t.degree + 1]) #+1 is due to indexing
-            p.terms[t.degree + 1] += t
-        else
-            p.terms[t.degree + 1] = t
-        end
+function +(p::PolynomialSparse, t::Term)
+    p1 = deepcopy(p)
+    t1 = deepcopy(t)
+    max_degreep1 = maximum((t)->t.degree, p1.terms)
+    degreet1 = t1.degree
+    max_both = maximum([max_degreep1,degreet1])
+
+    termsp1 = [zero(Term) for i  in 0:max_both]
+    termst1 = [zero(Term) for i  in 0:max_both]
+    termst1[t1.degree + 1] = t
+    
+    for t in p1.terms
+        termsp1[t.degree + 1] = t
     end
+
+    vt = termsp1 + termst1
+    return PolynomialSparse(vt)
 
     return trim!(p)
 end
-
 
 
 +(t::Union{Term,TermBI}, p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI}) = p + t

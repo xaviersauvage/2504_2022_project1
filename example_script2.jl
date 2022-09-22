@@ -3,10 +3,10 @@ Pkg.activate(".")
 
 include("poly_factorization_project.jl")
 
-p1 = rand(PolynomialDense)
-p2 = rand(PolynomialDense)
-p3 = rand(PolynomialDense)
-p4 = rand(PolynomialDense)
+p1 = rand(PolynomialSparse)
+p2 = rand(PolynomialSparse)
+p3 = rand(PolynomialSparse)
+p4 = rand(PolynomialSparse)
 
 println("p1 = ", p1)
 println("p2 = ", p2)
@@ -38,8 +38,7 @@ println("p4 mod 11 = ", mod(p4,11))
 
 
 println("\nThe GCD of two polynomials modulo prime")
-println("GCD(p2,p3) modulo 7 = ", gcd(p2,p3,7) )
-println("GCD(p1,p4) modulo 11 = ", gcd(p1,p4,11) )
+println("GCD(p1,p2) modulo 101 = ", gcd(p1,p2,101) )
 
 println("\nDivision of polynomials modulo prime")
 println("divide(p1,p2)(23) =", divide(p1,p2)(23) )
