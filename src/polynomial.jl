@@ -436,7 +436,8 @@ end
 """
 Check if the polynomial is zero.
 """
-iszero(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI})::Bool = p.terms == [Term(0,0)]
+iszero(p::Union{PolynomialDense,PolynomialSparse})::Bool = p.terms == [Term(0,0)]
+iszero(p::PolynomialSparseBI)::Bool = p.terms == [TermBI(big(0),big(0))]
 
 #################################################################
 # Transformation of the polynomial to create another polynomial #
