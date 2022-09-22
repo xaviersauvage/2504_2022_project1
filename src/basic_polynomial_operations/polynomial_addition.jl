@@ -87,7 +87,6 @@ function +(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse
         else
             p += t
         end
-        println(p.terms)
     end
     return p
 end
