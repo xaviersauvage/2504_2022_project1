@@ -9,7 +9,7 @@
 """
 Add a polynomial and a term.
 """
-function +(p::Polynomial, t::Term)
+function +(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI}, t::Union{Term,TermBI})
     p = deepcopy(p)
     if t.degree > degree(p)
         push!(p, t)
@@ -23,12 +23,15 @@ function +(p::Polynomial, t::Term)
 
     return trim!(p)
 end
-+(t::Term, p::Polynomial) = p + t
+
+
+
++(t::Union{Term,TermBI}, p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI}) = p + t
 
 """
 Add two polynomials.
 """
-function +(p1::Polynomial, p2::Polynomial)::Polynomial
+function +(p1::PolynomialDense, p2::PolynomialDense)::PolynomialDense
     p = deepcopy(p1)
     for t in p2
         p += t
@@ -36,8 +39,60 @@ function +(p1::Polynomial, p2::Polynomial)::Polynomial
     return p
 end
 
+function +(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse
+    pa = deepcopy(p1)
+    pb = deepcopy(p2)
+    max_degreep1 = maximum((t)->t.degree, pa.terms)
+    max_degreep2 = maximum((t)->t.degree, pb.terms)
+    max_both = maximum([max_degreep1,max_degreep2])
+
+    termsp1 = [zero(Term) for i  in 0:max_both]
+    termsp2 = [zero(Term) for i  in 0:max_both]
+
+    
+    for t in pa.terms
+        termsp1[t.degree + 1] = t
+    end
+
+    for t in pb.terms
+        termsp2[t.degree + 1] = t
+    end
+
+    vt = termsp1 + termsp2
+    return PolynomialSparse(vt)
+end
+
+function +(p1::PolynomialSparseBI, p2::PolynomialSparseBI)::PolynomialSparseBI
+    pa = deepcopy(p1)
+    pb = deepcopy(p2)
+    max_degreep1 = maximum((t)->t.degree, pa.terms)
+    max_degreep2 = maximum((t)->t.degree, pb.terms)
+    max_both = maximum([max_degreep1,max_degreep2])
+
+    termsp1 = [zero(TermBI) for i  in 0:max_both]
+    termsp2 = [zero(TermBI) for i  in 0:max_both]
+
+    
+    for t in pa.terms
+        termsp1[t.degree + 1] = t
+    end
+
+    for t in pb.terms
+        termsp2[t.degree + 1] = t
+    end
+
+    vt = termsp1 + termsp2
+    return PolynomialSparseBI(vt)
+end
+
 """
 Add a polynomial and an integer.
 """
-+(p::Polynomial, n::Int) = p + Term(n,0)
-+(n::Int, p::Polynomial) = p + Term(n,0)
++(p::PolynomialDense, n::Int) = p + Term(n,0)
++(p::PolynomialSparse, n::Int) = p + Term(n,0)
++(p::PolynomialSparseBI, n::Union{Int,BigInt}) = p + TermBI(n,0)
+
+
++(n::Int, p::PolynomialDense) = p + Term(n,0)
++(n::Int, p::PolynomialSparse) = p + Term(n,0)
++(n::Union{Int,BigInt}, p::PolynomialSparseBI) = p + TermBI(n,0)
