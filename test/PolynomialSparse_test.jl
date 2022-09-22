@@ -41,7 +41,7 @@ function prod_derivative_test_poly(;N::Int = 10^2,  seed::Int = 0)
         p2 = rand(PolynomialSparse)
         p1d = derivative(p1)
         p2d = derivative(p2)
-        @assert (p1d*p2) + (p1*p2d) == derivative(p1*p2)
+        @assert (p1d*p2) + (p1*p2d) - derivative(p1*p2) == 0
     end
     println("prod_derivative_test_poly - PASSED")
 end
@@ -70,7 +70,7 @@ function division_test_poly(;prime::Int = 101, N::Int = 10^4, seed::Int = 0)
                 throw(e)
             end
         end
-        @assert iszero( mod(q*p2+r - p_prod, prime) )
+        @assert mod(q*p2+r - p_prod, prime) == 0
     end
     println("division_test_poly - PASSED")
 end
