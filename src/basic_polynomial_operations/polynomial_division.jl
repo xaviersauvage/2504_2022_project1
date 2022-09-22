@@ -24,6 +24,9 @@ function divide(num::PolynomialDense, den::PolynomialDense)
             h = PolynomialDense( (leading(f) ÷ leading(g))(p) )  #syzergy 
             f = mod((f - h*g), p)
             q = mod((q + h), p)
+            println(h)
+            println(f)
+            println(q)
             prev_degree == degree(f) && break
             prev_degree = degree(f)
         end
