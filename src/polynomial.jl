@@ -573,6 +573,14 @@ function mod(f::Union{PolynomialDense,PolynomialSparse}, p::Int)::Union{Polynomi
     return trim!(f_out)
 end
 
+function mod(f::PolynomialSparse, p::Int)::PolynomialSparse
+    f_out = deepcopy(f)
+    for i in 1:length(f_out.terms)
+        f_out.terms[i] = mod(f_out.terms[i], p)
+    end
+    return trim!(f_out)
+end
+
 function mod(f::PolynomialSparseBI, p::BigInt)::PolynomialSparseBI
     f_out = deepcopy(f)
     for i in 1:length(f_out.terms)

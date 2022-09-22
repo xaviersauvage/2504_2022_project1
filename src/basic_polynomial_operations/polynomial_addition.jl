@@ -59,7 +59,6 @@ function +(p::PolynomialSparseBI, t::TermBI)
     for t in p1.terms
         termsp1[t.degree + 1] = t
     end
-
     vt = termsp1 + termst1
     return PolynomialSparseBI(vt)
 
