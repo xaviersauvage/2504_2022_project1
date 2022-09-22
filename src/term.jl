@@ -35,7 +35,7 @@ end
 Creates the zero term.
 """
 zero(::Type{Term})::Term = Term(0,0)
-zero(::Type{TermBI})::TermBI = TermBI(0,0)
+zero(::Type{TermBI})::TermBI = TermBI(big(0),big(0))
 
 """
 Creates the unit term.
@@ -86,7 +86,7 @@ evaluate(t::TermBI, x::T) where T <: Number = t.coeff * x^t.degree
 Add two terms of the same degree.
 """
 function +(t1::Term,t2::Term)::Term 
-    if t1 == Term(0,0) || t2 == Term(0,0)
+    if t1 == zero(Term) || t2 == zero(Term)
         Term(t1.coeff + t2.coeff, maximum([t1.degree, t2.degree]))
     else
     @assert t1.degree == t2.degree
@@ -95,7 +95,7 @@ function +(t1::Term,t2::Term)::Term
 end
 
 function +(t1::TermBI,t2::TermBI)::TermBI
-    if t1 == TermBI(0,0) || t2 == TermBI(0,0)
+    if t1 == zero(TermBI) || t2 == zero(TermBI)
         TermBI(t1.coeff + t2.coeff, maximum([t1.degree, t2.degree]))
     else
     @assert t1.degree == t2.degree
@@ -161,3 +161,4 @@ Integer divide a term by an integer.
 Check if two terms are the same
 """
 ==(t1::Term, t2::Term)::Bool = t1.coeff == t2.coeff && t1.degree == t2.degree
+==(t1::TermBI, t2::TermBI)::Bool = t1.coeff == t2.coeff && t1.degree == t2.degree

@@ -227,7 +227,7 @@ _terms = terms == -1 ? rand(Binomial(_degree,prob_term)) : terms
 degrees = vcat(sort(sample(0:_degree-1,_terms,replace = false)),_degree)
 coeffs = rand(1:max_coeff,_terms+1)
 monic && (coeffs[end] = 1)
-p = PolynomialSparseBI( [TermBI(coeffs[i],degrees[i]) for i in 1:length(degrees)] )
+p = PolynomialSparseBI( [TermBI(BigInt(coeffs[i]),BigInt(degrees[i])) for i in 1:length(degrees)] )
 condition(p) && return p
 end
 end
