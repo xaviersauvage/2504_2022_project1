@@ -384,14 +384,14 @@ coeffs(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI})::Vector{In
 The degree of the polynomial.
 """
 degree(p::Union{PolynomialDense,PolynomialSparse})::Int = leading(p).degree 
-degree(p::PolynomialSparseBI)::Union{Int,BigInt} = leading(p).degree 
+degree(p::PolynomialSparseBI)::BigInt = leading(p).degree 
 
 
 """
 The content of the polynomial is the GCD of its coefficients.
 """
 content(p::Union{PolynomialDense,PolynomialSparse})::Int = euclid_alg(coeffs(p))
-content(p::PolynomialSparseBI)::Union{Int,BigInt} = euclid_alg(coeffs(p))
+content(p::PolynomialSparseBI)::BigInt = euclid_alg(coeffs(p))
 
 """
 Evaluate the polynomial at a point `x`.
@@ -523,7 +523,7 @@ Subtraction of two polynomials.
 """
 -(p1::PolynomialDense, p2::PolynomialDense)::PolynomialDense = p1 + (-p2)
 -(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse = p1 + (-p2)
--(p1::PolynomialSparseBI, p2::PolynomialSparseBI)::PolynomialSparse = p1 + (-p2)
+-(p1::PolynomialSparseBI, p2::PolynomialSparseBI)::PolynomialSparseBI = p1 + (-p2)
 
 
 """

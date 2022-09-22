@@ -23,9 +23,9 @@ struct Term  #structs are immutable by default
 end
 
 struct TermBI  #structs are immutable by default
-    coeff::Union{Int,BigInt}
-    degree::Union{Int,BigInt}
-    function TermBI(coeff::Union{Int,BigInt}, degree::Union{Int,BigInt})
+    coeff::BigInt
+    degree::BigInt
+    function TermBI(coeff::BigInt, degree::BigInt)
         degree < 0 && error("Degree must be non-negative")
         coeff != 0 ? new(coeff,degree) : new(coeff,0)
     end
