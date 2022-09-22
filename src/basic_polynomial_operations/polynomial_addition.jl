@@ -79,27 +79,19 @@ function +(p1::PolynomialDense, p2::PolynomialDense)::PolynomialDense
 end
 
 function +(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse
-    pa = deepcopy(p1)
-    pb = deepcopy(p2)
-    max_degreep1 = maximum((t)->t.degree, pa.terms)
-    max_degreep2 = maximum((t)->t.degree, pb.terms)
-    max_both = maximum([max_degreep1,max_degreep2])
-
-    termsp1 = [zero(Term) for i  in 0:max_both]
-    termsp2 = [zero(Term) for i  in 0:max_both]
-
+    p = deepcopy(p1)
     
-    for t in pa.terms
-        termsp1[t.degree + 1] = t
+    for t in p2
+        if t.degree ∉ [t.degree for t in p]
+            push!(p.terms,t)
+        else
+            p += t
+        end
+        println(p.terms)
     end
-
-    for t in pb.terms
-        termsp2[t.degree + 1] = t
-    end
-
-    vt = termsp1 + termsp2
-    return PolynomialSparse(vt)
+    return p
 end
+
 
 function +(p1::PolynomialSparseBI, p2::PolynomialSparseBI)::PolynomialSparseBI
     pa = deepcopy(p1)
