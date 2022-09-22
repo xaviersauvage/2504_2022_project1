@@ -86,10 +86,53 @@ function factor(f::PolynomialSparse, prime::Int)::Vector{Tuple{PolynomialSparse,
 
     return ret_val
 end
+
+function factor(f::PolynomialSparseBI, prime::BigInt)::Vector{Tuple{PolynomialSparseBI,BigInt}}
+    #Cantor Zassenhaus factorization
+
+    f_modp = mod(f, prime)
+    degree(f_modp) ≤ 1 && return [(f_modp,1)]
+
+    # make f primitive
+    ff = prim_part(f_modp)(prime)      
+    # @show "after prim:", ff
+
+     # make f square-free
+    squares_poly = gcd(f, derivative(ff), prime) 
+    ff = (ff ÷ squares_poly)(prime) 
+    # @show "after square free:", ff
+
+    # make f monic
+    old_coeff = leading(ff).coeff
+    ff = (ff ÷ old_coeff)(prime)        
+    # @show "after monic:", ff
+
+    dds = dd_factor(ff, prime)
+
+    ret_val = Tuple{PolynomialSparseBI,BigInt}[]
+
+    for (k,dd) in enumerate(dds)
+        sp = dd_split(dd, k, prime)
+        sp = map((p)->(p ÷ leading(p).coeff)(prime),sp) #makes the polynomials inside the list sp, monic
+        for mp in sp
+            push!(ret_val, (mp, multiplicity(f_modp,mp,prime)) )
+        end
+    end
+
+    #Append the leading coefficient as well
+    push!(ret_val, (leading(f_modp).coeff* one(PolynomialSparseBI), 1) )
+
+    return ret_val
+end
 """
 Expand a factorization.
 """
 function expand_factorization(factorization::Vector{Tuple{PolynomialDense,Int}})::PolynomialDense
+    length(factorization) == 1 && return first(factorization[1])^last(factorization[1])
+    return *([first(tt)^last(tt) for tt in factorization]...)
+end
+
+function expand_factorization(factorization::Vector{Tuple{PolynomialSparse,Int}})::PolynomialSparse 
     length(factorization) == 1 && return first(factorization[1])^last(factorization[1])
     return *([first(tt)^last(tt) for tt in factorization]...)
 end
@@ -133,7 +176,7 @@ function dd_factor(f::PolynomialDense, prime::Int)::Array{PolynomialDense}
 end
 
 function dd_factor(f::PolynomialSparse, prime::Int)::Array{PolynomialSparse}
-    x = x_poly()
+    x = PolynomialSparse([Term(1,1)])
     w = deepcopy(x)
     g = Array{PolynomialSparse}(undef,degree(f)) #Array of polynomials indexed by degree
 

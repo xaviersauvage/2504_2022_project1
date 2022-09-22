@@ -65,3 +65,4 @@ end
 The GCD of two polynomials modulo prime.
 """
 gcd(a::Union{PolynomialDense,PolynomialSparse}, b::Union{PolynomialDense,PolynomialSparse}, prime::Int) = extended_euclid_alg(a,b,prime) |> first
+gcd(a::PolynomialSparseBI, b::PolynomialSparseBI, prime::BigInt) = extended_euclid_alg(a,b,prime) |> first

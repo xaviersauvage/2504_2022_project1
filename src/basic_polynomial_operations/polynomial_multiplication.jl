@@ -58,7 +58,7 @@ function ^(p::PolynomialSparse, n::Int)
     return out
 end
 
-function ^(p::PolynomialSparseBI, n::Union{Int,BigInt})
+function ^(p::PolynomialSparseBI, n::BigInt)
     n < 0 && error("No negative power")
     out = one(p)
     for _ in 1:n

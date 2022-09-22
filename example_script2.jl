@@ -41,7 +41,7 @@ println("\nThe GCD of two polynomials modulo prime")
 println("GCD(p1,p2) modulo 101 = ", gcd(p1,p2,101) )
 
 println("\nDivision of polynomials modulo prime")
-println("divide(p1,p2)(23) =", divide(p1,p2)(23) )
+println("divide(p1,p2)(23) = ", divide(p1,p2)(23) )
 
 println("\nFactorisation")
-println("dd_factor(p4,5) = ", dd_factor(p4,5))
+println("factor(p4,5) = ", factor(p4,5))
