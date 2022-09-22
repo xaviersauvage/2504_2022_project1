@@ -41,7 +41,7 @@ zero(::Type{TermBI})::TermBI = TermBI(big(0),big(0))
 Creates the unit term.
 """
 one(::Type{Term})::Term = Term(1,0)
-one(::Type{TermBI})::TermBI = TermBI(1,0)
+one(::Type{TermBI})::TermBI = TermBI(big(1),big(0))
 
 ###########
 # Display #
