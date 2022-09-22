@@ -52,8 +52,8 @@ function +(p::PolynomialSparseBI, t::TermBI)
     degreet1 = t1.degree
     max_both = maximum([max_degreep1,degreet1])
 
-    termsp1 = [zero(Term) for i  in 0:max_both]
-    termst1 = [zero(Term) for i  in 0:max_both]
+    termsp1 = [zero(TermBI) for i  in 0:max_both]
+    termst1 = [zero(TermBI) for i  in 0:max_both]
     termst1[t1.degree + 1] = t
     
     for t in p1.terms
@@ -61,7 +61,7 @@ function +(p::PolynomialSparseBI, t::TermBI)
     end
 
     vt = termsp1 + termst1
-    return PolynomialSparse(vt)
+    return PolynomialSparseBI(vt)
 
     return trim!(p)
 end
@@ -120,7 +120,6 @@ function +(p1::PolynomialSparseBI, p2::PolynomialSparseBI)::PolynomialSparseBI
     for t in pb.terms
         termsp2[t.degree + 1] = t
     end
-
     vt = termsp1 + termsp2
     return PolynomialSparseBI(vt)
 end
@@ -130,9 +129,9 @@ Add a polynomial and an integer.
 """
 +(p::PolynomialDense, n::Int) = p + Term(n,0)
 +(p::PolynomialSparse, n::Int) = p + Term(n,0)
-+(p::PolynomialSparseBI, n::BigInt) = p + TermBI(n,0)
++(p::PolynomialSparseBI, n::BigInt) = p + TermBI(big(n),big(0))
 
 
 +(n::Int, p::PolynomialDense) = p + Term(n,0)
 +(n::Int, p::PolynomialSparse) = p + Term(n,0)
-+(n::BigInt, p::PolynomialSparseBI) = p + TermBI(n,0)
++(n::BigInt, p::PolynomialSparseBI) = p + TermBI(big(n),big(0))
