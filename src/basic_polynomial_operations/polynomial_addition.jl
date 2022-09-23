@@ -80,15 +80,16 @@ end
 
 function +(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse
     p = deepcopy(p1)
-    
+    pterms = p.terms
     for t in p2
         if t.degree ∉ [t.degree for t in p]
-            push!(p.terms,t)
+            push!(pterms,t)
         else
             p += t
         end
     end
-    return p
+    println(pterms)
+    return p = PolynomialSparse(pterms)
 end
 
 

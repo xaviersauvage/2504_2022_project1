@@ -46,20 +46,18 @@ struct PolynomialDense
 end
 
 struct PolynomialSparse
-    terms::Vector{Term}       
+    terms::Vector{Term}
+
     PolynomialSparse() = new([zero(Term)])
+
     function PolynomialSparse(vt::Vector{Term})
-        vt = filter((t)->!iszero(t), vt)
+
+        vt = filter((t)->!iszero(t),vt)
         if isempty(vt)
             vt = [zero(Term)]
         end
-
-        terms = [] 
-
-        for i in 1:length(vt)
-            push!(terms,vt[i]) 
-        end
-        return new(terms)
+        vt = sort(vt, by=degree, rev=true)
+        return new(vt)
     end
 end
 
@@ -280,7 +278,7 @@ function show(io::IO, p::PolynomialSparse)
         print(io,"0")
     else
         positive_terms = []
-        for (i,t) in enumerate(reverse(p.terms))
+        for (i,t) in enumerate(p.terms)
             t.coeff !=0 ? push!(positive_terms, t) : continue
         end
         for (i,t) in enumerate((positive_terms))
@@ -384,7 +382,8 @@ coeffs(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI})::Vector{In
 The degree of the polynomial.
 """
 degree(p::Union{PolynomialDense,PolynomialSparse})::Int = leading(p).degree 
-degree(p::PolynomialSparseBI)::BigInt = leading(p).degree 
+degree(p::PolynomialSparseBI)::BigInt = leading(p).degree
+degree(t::Term)::Int = t.degree 
 
 
 """
