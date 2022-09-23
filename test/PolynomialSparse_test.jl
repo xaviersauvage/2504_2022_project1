@@ -16,6 +16,13 @@ function prod_test_poly(;N::Int = 10^3, N_prods::Int = 20, seed::Int = 0)
         p1 = rand(PolynomialSparse)
         p2 = rand(PolynomialSparse)
         prod = p1*p2
+        if  leading(prod) != leading(p1)*leading(p2)
+            println(prod)
+            println(p1)
+            println(p2)
+            println(leading(prod))
+            println(leading(p1)*leading(p2))
+        end
         @assert leading(prod) == leading(p1)*leading(p2)
     end
 

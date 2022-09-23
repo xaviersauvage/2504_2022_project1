@@ -369,8 +369,8 @@ length(p::Union{PolynomialDense,PolynomialSparse,PolynomialSparseBI}) = length(p
 """
 The leading term of the polynomial.
 """
-leading(p::Union{PolynomialDense,PolynomialSparse})::Term = isempty(p.terms) ? zero(Term) : last(p.terms) 
-leading(p::PolynomialSparseBI)::TermBI = isempty(p.terms) ? zero(TermBI) : last(p.terms) 
+leading(p::Union{PolynomialDense,PolynomialSparse})::Term = isempty(p.terms) ? zero(Term) : first(p.terms) 
+leading(p::PolynomialSparseBI)::TermBI = isempty(p.terms) ? zero(TermBI) : first(p.terms) 
 
 
 """
