@@ -88,7 +88,6 @@ function +(p1::PolynomialSparse, p2::PolynomialSparse)::PolynomialSparse
             p += t
         end
     end
-    println(pterms)
     return p = PolynomialSparse(pterms)
 end
 
